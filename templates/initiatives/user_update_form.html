@@ -1,0 +1,27 @@
+{% extends 'initiatives/base.html' %}
+{% load crispy_forms_tags %}
+{% block body %}
+        <style>
+    .col-form-label{
+        width: 100%;
+    }
+</style>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+                        <h5 class="text-center text-info">تعديل بيانات مستخدم</h5>
+                        <div class="panel-body">
+                            <form class="form-horizontal" action="" method="post" enctype="multipart/form-data" novalidate>
+                                 {% csrf_token %}
+                                    {{ form|crispy }}
+                                <br>
+                                 <button class="btn btn-outline-success col-12" type="submit">حفظ</button>
+                            </form>
+                        </div>
+            </div>
+            <div class="col-4"></div>
+        </div>
+    </div>
+    <br>
+{% endblock %}

@@ -1,0 +1,74 @@
+
+
+{% extends 'initiatives/base.html' %}
+{% block title %}قادة المبادرات{% endblock %}
+{% block body %}
+
+    <div class="center">
+        <div class="container bootstrap snippet">
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+             <h3 class="text-center">قادة المبادرات</h3>
+        </div>
+        <div class="col-4">
+             <a href="{% url 'initiatives:add-user' %}">
+                <h6 style="text-align:left; color: #84a0ba; margin-top: 3.5%">إضافة قائد
+                    <i class="fas fa-user-plus"></i>
+                </h6>
+             </a>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-lg-12">
+                 <div class="main-box-body clearfix">
+                    <div class="table-responsive">
+                        <table class="table user-list">
+                            <thead>
+                                <tr>
+                                <th><span>الاسم</span></th>
+                                <th><span>البريد الإلكتروني</span></th>
+                                <th><span>اسم المستخدم</span></th>
+                                <th><span>تعديل</span></th>
+                                <th><span>حذف</span></th>
+                                </tr>
+                            </thead>
+                            <tbody >
+                            {% for leader in leaders %}
+                                <tr class="leader_table">
+                                    <td>{{ leader.first_name }}</td>
+                                    <td>{{ leader.email }}</td>
+                                    <td>{{ leader.username }}</td>
+                                    <td>
+                                         <form class="inline-group" action="{% url 'initiatives:leader-update' leader.id %}" method="get" novalidate>
+                                            {% csrf_token %}
+                                            <input type="hidden" name="leader_id" value="{{ leader.id }}">
+                                            <button class="btn inline" type="submit" style="background: none; border: none">
+                                                <i class="fas fa-user-edit" style="color: #4a8ece"></i>
+                                            </button>
+                                         </form>
+                                    </td>
+                                    <td>
+                                         <form class="inline-group" action="{% url 'initiatives:user-delete' leader.id %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="leader_id" value="{{ leader.id }}">
+                                            <button class="btn inline" type="submit" style="background: none; border: none">
+                                                <i class="fas fa-user-times" style="color: #b21818"></i>
+                                            </button>
+                                         </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+         </div>
+    </div>
+</div>
+    </div>
+
+
+{% endblock %}

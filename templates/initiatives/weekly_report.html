@@ -1,0 +1,83 @@
+{% extends 'initiatives/base.html' %}
+{% block title %}المبادرات{% endblock %}
+{% block body %}
+<style>
+#weekly_reports:hover{
+    background-color: #eaeaea !important;
+}
+
+</style>
+     <div class="container">
+     <h4 class="text-center">التقارير الأسبوعية للمبادرات</h4>
+         <div class="row" >
+              <div class="col-4 text-center" style="margin-top: 1.5%;">
+                  <div >
+                      <div>
+                      <h5 class="d-inline" >عنوان المبادرة: &nbsp;</h5>
+                      <h5 class="d-inline" style=" color: #933939;">{{ initi.mub_name }}</h5>
+                  </div>
+                  </div>
+              </div>
+              <div class="col-4 text-center" style="margin-top: 1.5%;">
+                  <div>
+                      <div>
+                          <h5 class="d-inline">قائد المبادرة: &nbsp; </h5>
+                          <h5 class="d-inline"  style=" color: #933939;">{{ initi.leader.first_name }}</h5>
+                      </div>
+                  </div>
+              </div>
+               <div class="col-2">
+                   <a href="{% url 'initiatives:update-initiatives' initi.id initi.pk  %}">
+                      <h6 class="text-info" style="text-align:left; margin-top: 15%">
+                          تعديل المبادرة
+                          <i class="fas fa-edit"></i>
+                      </h6>
+                   </a>
+                </div>
+              <div class="col-2">
+                   <form class="inline-group" action="{% url 'initiatives:delete-initiatives' initi.id initi.pk %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="initi_id" value="{{ initi.id }}">
+                        <button class="btn inline" type="submit" style="background: none; border: none">
+                            <h6 class="text-danger" style="text-align:left; margin-top: 19% ">
+                                  حذف المبادرة
+                                  <i class="fas fa-trash-alt"></i>
+                            </h6>
+                        </button>
+                    </form>
+                </div>
+          </div>
+         <hr style="width: 80%">
+
+               <div class="row">
+                 <div class="col-3"></div>
+                 <div class="col-6" >
+                      {% for mub in initi.reports_set.all  %}
+                          {% if mub.ready %}
+                            <a href="{% url 'initiatives:detail' mub.mub_r.id  mub.week_no mub.id  %}  " style=" text-decoration: none !important; color: #1b1e21">
+                                <ul class="" style="background: none; !important;">
+                                    <li id="weekly_reports" class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ mub.week_ar  }}
+                                    {% for com in mub.comment_set.all %}
+                                            <span style="text-align: left; font-size: 11px">تم التقييم &nbsp;
+                                                <i class="fas fa-check-circle" title="تم التقييم" style="color: green; font-size: 17px !important;"></i></span>
+                                                <span style="font-size: 10pt">التقييم ({{ com.grade }}) من (100)</span>
+                                    {% empty %}
+                                        <span style="text-align: left; font-size: 11px">لم يتم التقييم &nbsp;
+                                        <i class="fas fa-info-circle" title="لم يتم التقييم" style="color: orange; font-size: 17px !important;"></i></span>
+                                    {% endfor %}
+                                    </li>
+                                </ul>
+                            </a>
+                           {% endif %}
+                      {% endfor %}
+                 </div>
+                 <div class="col-3">
+                 </div>
+              </div>
+
+
+
+     </div>
+
+{% endblock %}
